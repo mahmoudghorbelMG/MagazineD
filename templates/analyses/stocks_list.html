@@ -1,0 +1,281 @@
+{% extends 'analyses/base.html' %}
+{% block content %}
+<html lang="en">
+
+<head>
+    <title>Pie Chart</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // Function to sort the table by a specific column
+        function sortTable(column) {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("currency-table");
+            switching = true;
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[column];
+                    y = rows[i + 1].getElementsByTagName("TD")[column];
+
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            var rows = document.querySelectorAll("tbody tr");
+            rows.forEach(function (row) {
+                var changeCell = row.querySelector(".change");
+                var changeValue = parseFloat(changeCell.textContent);
+                if (changeValue > 0) {
+                    changeCell.classList.add("positive-change");
+                } else if (changeValue < 0) {
+                    changeCell.classList.add("negative-change");
+                }
+
+                var changePercentCell = row.querySelector(".change-percent");
+                var changePercentValue = parseFloat(changePercentCell.textContent);
+                if (changePercentValue > 0) {
+                    changePercentCell.classList.add("positive-change");
+                } else if (changePercentValue < 0) {
+                    changePercentCell.classList.add("negative-change");
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <section class="s-content">
+        <div class="s-pageheader">
+            <div class="row">
+                <div class="column large-12">
+                    <h1 class="page-title">
+                        Stocks List
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-2 gap-4  ">
+            <div class="w-full h-600 w-100 sm:w-auto sm:h-auto">
+                <canvas id="chart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var ctx = document.getElementById('chart').getContext('2d');
+                    var chartData = {{ chart_data| safe}};
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: chartData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+            </script>
+
+            <div class="w-full h-500 sm:w-auto sm:h-auto">
+                <canvas id="pieChart"></canvas>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                const data = {{ currencies| safe }};
+                const labels = data.map(item => item.CompanyName);
+                const marketCaps = data.map(item => parseFloat(item.MarketCap.replace(/,/g, '')));
+
+                const ctx = document.getElementById('pieChart').getContext('2d');
+
+                // Define an array of colors
+                const colors = [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF',
+                ];
+
+                const chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: marketCaps,
+                            backgroundColor: colors.slice(0, marketCaps.length),
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                    }
+                });
+            </script>
+        </div>
+        <div class="overflow-x-auto">
+            <table id="currency-table" class="min-w-full divide-y divide-gray-200">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2 bg-indigo-500 text-white">Symbol</th>
+                        <th class="px-4 py-2 bg-indigo-500 text-white">Company Name</th>
+                        <th class="px-4 py-2 bg-indigo-500 text-white">Market Cap</th>
+                        <th class="px-4 py-2 bg-indigo-500 text-white">Stock Price</th>
+                        <th class="px-4 py-2 bg-indigo-500 text-white">% Change</th>
+                        <th class="px-4 py-2 bg-indigo-500 text-white">Change 1W</th>
+                        <th class="px-4 py-2 bg-indigo-500 text-white">Change 1M</th>
+                        <th class="px-4 py-2 bg-indigo-500 text-white">Change 6M</th>
+                        <th class="px-4 py-2 bg-indigo-500 text-white">Change YTD</th>
+                        <th class="px-4 py-2 bg-indigo-500 text-white">Change 1Y</th>
+                        <th class="px-4 py-2 bg-indigo-500 text-white">Change 3Y</th>
+                        <th class="px-4 py-2 bg-indigo-500 text-white">Change 5Y</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for currency in currencies %}
+                    <tr class="table-row">
+                        <td class="px-4 py-2">{{ currency.Symbol }}</td>
+                        <td class="px-4 py-2">{{ currency.CompanyName }}</td>
+                        <td class="px-4 py-2">{{ currency.MarketCap }}</td>
+                        <td class="px-4 py-2 change">{{ currency.StockPrice }}</td>
+                        <td class="px-4 py-2 change-percent">{{ currency.ChangePercentage }}</td>
+                        <td class="px-4 py-2 change-percent">{{ currency.Change1W }}</td>
+                        <td class="px-4 py-2 change-percent">{{ currency.Change1M }}</td>
+                        <td class="px-4 py-2 change-percent">{{ currency.Change6M }}</td>
+                        <td class="px-4 py-2 change-percent">{{ currency.ChangeYTD }}</td>
+                        <td class="px-4 py-2 change-percent">{{ currency.Change1Y }}</td>
+                        <td class="px-4 py-2 change-percent">{{ currency.Change3Y }}</td>
+                        <td class="px-4 py-2 change-percent">{{ currency.Change5Y }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="pagination" class="flex justify-center mt-4">
+            <button id="prevBtn"
+                class="mr-2 px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 focus:bg-gray-300 text-sm font-semibold text-gray-800 focus:outline-none">Previous</button>
+            <div id="pageNumbers" class="flex">
+                <!-- Page numbers will be dynamically inserted here -->
+            </div>
+            <button id="nextBtn"
+                class="ml-2 px-4 py-2 rounded-md bg-gray-200 hover:bg-gray-300 focus:bg-gray-300 text-sm font-semibold text-gray-800 focus:outline-none">Next</button>
+        </div>
+
+
+        <div class="w-100 flex justify-end ">
+            <a class="w-60 h-16 rounded-md bg-indigo-600 text-white text-base font-semibold shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600 flex items-center justify-center"
+                href="{% url 'trending' %}">
+                See more
+            </a>
+
+        </div>
+    </section>
+    <script>
+        var maxRows = 10; // Define the maximum number of rows per page
+        var currentPage = 1; // Current page number
+
+        // Function to show a specific page
+        function showPage(pageNum) {
+            var table = document.getElementById("currency-table");
+            var rows = table.getElementsByClassName("table-row");
+
+            var startIndex = (pageNum - 1) * maxRows;
+            var endIndex = startIndex + maxRows;
+
+            for (var i = 0; i < rows.length; i++) {
+                if (i >= startIndex && i < endIndex) {
+                    rows[i].style.display = "table-row";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+
+        // Function to navigate to the previous page
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
+                setActivePage();
+            }
+        }
+
+        // Function to navigate to the next page
+        function nextPage() {
+            var table = document.getElementById("currency-table");
+            var rows = table.getElementsByClassName("table-row");
+
+            var totalPages = Math.ceil(rows.length / maxRows);
+
+            if (currentPage < totalPages) {
+                currentPage++;
+                showPage(currentPage);
+                setActivePage();
+            }
+        }
+
+        showPage(currentPage); // Call the function to initially show the first page
+
+        // Event listeners for the Previous and Next buttons
+        document.getElementById("prevBtn").addEventListener("click", prevPage);
+        document.getElementById("nextBtn").addEventListener("click", nextPage);
+
+        // Function to generate the page numbers
+        function generatePageNumbers() {
+            var table = document.getElementById("currency-table");
+            var rows = table.getElementsByClassName("table-row");
+
+            var totalPages = Math.ceil(rows.length / maxRows);
+            var pageNumbersDiv = document.getElementById("pageNumbers");
+            pageNumbersDiv.innerHTML = ""; // Clear previous page numbers
+
+            for (var i = 1; i <= totalPages; i++) {
+                var pageNumber = document.createElement("button");
+                pageNumber.textContent = i;
+                pageNumber.classList.add("mx-1", "px-3", "py-1", "bg-gray-200", "hover:bg-gray-300", "focus:bg-gray-300");
+                pageNumber.addEventListener("click", function () {
+                    currentPage = parseInt(this.textContent);
+                    showPage(currentPage);
+                    setActivePage();
+                });
+                pageNumbersDiv.appendChild(pageNumber);
+            }
+
+            setActivePage(); // Set the active page initially
+        }
+
+        // Function to set the active page
+        function setActivePage() {
+            var pageNumbers = document.getElementById("pageNumbers").getElementsByTagName("button");
+
+            for (var i = 0; i < pageNumbers.length; i++) {
+                pageNumbers[i].classList.remove("active-page");
+            }
+
+            pageNumbers[currentPage - 1].classList.add("active-page");
+        }
+
+        generatePageNumbers(); // Call the function to initially generate page numbers
+    </script>
+</body>
+{% endblock content %}

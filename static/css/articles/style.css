@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+:root {
+    --darkest-bleu: #2C2E30;
+    --Future-blue: #038FF4;
+    --dark-white: #F0F0F0;
+    --dark-grey: #5D5E60;
+    --lightest-grey: #BEBEBE;
+}
+
+body {
+    background-color: var(--dark-white);
+}
+
+h4 {
+    top: 0;
+    left: 0;
+    font-size: 2em;
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--Future-blue);
+    padding: 10px;
+}
+
+.container li {
+    display: none;
+}
+
+.logo {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo img {
+    width: 100%;
+    max-width: 250px;
+}
+
+.container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 800px;
+    padding: 50px 30px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 25px 50px rgba(7, 20, 35, 0.2);
+}
+
+.options {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+}
+
+.container button {
+    height: 28px;
+    width: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 3px;
+    border: none;
+    background-color: #ffffff;
+    outline: none;
+    color: #020929;
+}
+
+select {
+    padding: 7px;
+    border: 1px solid #020929;
+    border-radius: 3px;
+}
+
+input {
+    font-family: inherit;
+    width: 100%;
+    outline: 0;
+    margin: 0 0 20px;
+    padding: 10px 15px;
+    border-radius: 7px;
+    border: 1px solid var(--darkest-bleu);
+}
+
+label,
+select {
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn {
+    background-color: #eb3b5a;
+    color: white;
+    width: 100px;
+    margin: 30px 0;
+    border: 0;
+    line-height: 42px;
+    border-radius: 7px;
+    font-weight: 700;
+    cursor: pointer;
+    transform: all .3s ease-out;
+    -webkit-transform: all .3s ease-out;
+}
+
+.ck-editor__editable {
+    max-width: 100%;
+    width: 100%;
+}
+
+
+.btn:hover {
+    background-color: var(--darkest-bleu);
+}
+
+.active {
+    background-color: #e0e9ff;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    h4 {
+        font-size: 1.5em;
+    }
+}

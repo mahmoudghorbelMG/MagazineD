@@ -1,0 +1,80 @@
+{% extends 'dashboard/dashbord.html' %}
+{% block article %}
+<div class="title-wrapper pt-30">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <div class="title mb-30">
+        <h2>Panding Articles</h2>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-lg-12">
+  <div class="card-style mb-30">
+    <div class="title">
+     <div class="left">
+        <h6 class="text-medium  ml-30">Requests</h6>
+     </div> 
+     <div class="table-wrapper table-responsive">
+     <table class="table">
+      <thead>
+        <tr> <tr>
+          <th class="min-width">
+              <h6 class="text-sm text-medium">Auther</h6>
+          </th>
+          <th class="min-width">
+              <h6 class="text-sm text-medium">
+                  Title 
+              </h6>
+          </th>
+          <th class="min-width">
+              <h6 class="text-sm text-medium">
+                  Breaf
+              </h6>
+          </th>
+          <th class="min-width">
+              <h6 class="text-sm text-medium">
+                  Status 
+              </h6>
+          </th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for article in articles %}
+        <tr>
+          <td class="People">
+            <!--<img src="" alt="">-->
+            <div class="people-de">
+              <h5>{{ article.author.username }}</h5>
+              <p>{{ article.author.email }}</p>
+            </div>
+          </td>
+
+          <td class="people-des">
+          {{ article.title }}
+          </td>
+          <td class="people-des">
+            <p class="text-sm">{{ article.content|truncatechars:2|safe }} <a href="{% url 'view_article' article.pk %}"style="text-decoration: none;">Read more</a></p>
+          </td>
+
+          <td>
+            <div class="action">
+            <form method="POST">
+              {% csrf_token %}
+              <input type="hidden" name="article_id" value="{{ article.pk }}">
+              <button type="submit" name="action" value="accepted" style="background: none; border : none ; "><i class="ri-checkbox-circle-line" style="font-size: 25px; color:#219653;"></i></button>
+              <button type="submit" name="action" value="refused"  style="background: none; border : none ; "><i class="ri-close-circle-line" style="font-size: 25px; color:#d50100;"></i></button>
+          </form>
+        </div>
+          </td>
+          {% endfor %}
+          <td>{{ article.etat }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    </div>
+  </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,356 @@
+{% extends 'analyses/base.html' %}
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    // Function to show a specific table
+    function showTable(tableId) {
+      var tables = document.getElementsByClassName('stock-table');
+      for (var i = 0; i < tables.length; i++) {
+        if (tables[i].id === tableId) {
+          tables[i].style.display = 'block';
+        } else {
+          tables[i].style.display = 'none';
+        }
+      }
+    }
+
+    // Event listeners for the buttons
+    var btnTrending = document.getElementById('btnTrending');
+    var btnLosers = document.getElementById('btnLosers');
+    var btnGainers = document.getElementById('btnGainers');
+
+    btnTrending.addEventListener('click', function () {
+      showTable('table_Trending');
+    });
+
+    btnLosers.addEventListener('click', function () {
+      showTable('table_today_losers');
+    });
+
+    btnGainers.addEventListener('click', function () {
+      showTable('table_today_Gainers');
+    });
+
+    // Show the 'table_Trending' by default
+    showTable('table_Trending');
+  });
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    // Function to show the table_Trending
+    function showTrendingTable() {
+      var tableTrending = document.getElementById('table_Trending');
+      if (tableTrending) {
+        tableTrending.style.display = 'block';
+      }
+    }
+
+    // Call the function when the page loads
+    showTrendingTable();
+  });
+</script>
+<script>
+  // Function to sort the table by a specific column
+  function sortTable(column) {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("currency-table");
+    switching = true;
+
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+
+      for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[column];
+        y = rows[i + 1].getElementsByTagName("TD")[column];
+
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          shouldSwitch = true;
+          break;
+        }
+      }
+
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+      }
+    }
+  }
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    // Function to show a specific table
+    function showTable(tableId) {
+      var tables = document.getElementsByClassName('stock-table');
+      for (var i = 0; i < tables.length; i++) {
+        if (tables[i].id === tableId) {
+          tables[i].style.display = 'block';
+        } else {
+          tables[i].style.display = 'none';
+        }
+      }
+    }
+
+    // Event listeners for the buttons
+    var btnTrending = document.getElementById('btnTrending');
+    var btnLosers = document.getElementById('btnLosers');
+    var btnGainers = document.getElementById('btnGainers');
+
+    btnTrending.addEventListener('click', function () {
+      showTable('table_Trending');
+    });
+
+    btnLosers.addEventListener('click', function () {
+      showTable('table_today_losers');
+    });
+
+    btnGainers.addEventListener('click', function () {
+      showTable('table_today_Gainers');
+    });
+
+    // Show the 'table_Trending' by default
+    showTable('table_Trending');
+  });
+</script>
+<script>
+  window.addEventListener('DOMContentLoaded', (event) => {
+    // Function to show the table_Trending
+    function showTrendingTable() {
+      var tableTrending = document.getElementById('table_Trending');
+      if (tableTrending) {
+        tableTrending.style.display = 'block';
+      }
+    }
+
+    // Call the function when the page loads
+    showTrendingTable();
+  });
+</script>
+
+
+<body style="padding: 0px;">
+  <section class="s-content">
+    <div class="s-pageheader">
+      <div class="row">
+        <div class="column large-12">
+          <h1 class="page-title">
+            Currencies exchange
+          </h1>
+        </div>
+      </div>
+    </div>
+    <div class="overflow-x-auto">
+      <table id="currency-table" class="min-w-full divide-y divide-gray-200 mb-4">
+        <thead>
+            <tr>
+                <th class="px-6 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider cursor-pointer bg-gray-200">
+                    Name
+                </th>
+                <th class="px-6 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider cursor-pointer bg-gray-200">
+                    Price
+                </th>
+                <th class="px-6 py-3 text-left text-lg font-medium text-gray-500 uppercase tracking-wider cursor-pointer bg-gray-200">
+                    Change
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for currency in currencies %}
+                <tr class="table-row">
+                    <td class="px-6 py-4 whitespace-nowrap border">{{ currency.Name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border">{{ currency.Price }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap border">{{ currency.Change }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    </div>
+
+    <div id="pagination" class="flex flex-col md:flex-row justify-center items-center mt-4">
+      <button id="prevBtn" class="mr-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 focus:bg-gray-300 rounded-md">
+        Previous
+      </button>
+      <div id="pageNumbers" class="flex mt-2 md:mt-0 space-x-2">
+        <!-- Page numbers will be dynamically inserted here -->
+      </div>
+      <button id="nextBtn" class="ml-2 px-4 py-2 bg-gray-200 hover:bg-gray-300 focus:bg-gray-300 rounded-md">
+        Next
+      </button>
+    </div>
+    <div class="flex flex-col md:flex-row">
+      <div class="w-full md:w-1/2">
+        <canvas id="barChart"></canvas>
+      </div>
+      <div class="w-full md:w-1/2">
+        <canvas id="pieChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var ctx = document.getElementById('barChart').getContext('2d');
+      var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: {{ labels1 | safe }},
+      datasets: [{
+        label: 'Price',
+        data: {{ data1 | safe }},
+      backgroundColor: 'rgba(54, 162, 235, 0.7)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 1
+        }]
+      },
+      options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+    });
+  });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var labels = {{ labels | safe }};
+      var data = {{ data | safe }};
+      
+      var initialLabels = labels.slice(0, 10); // Select the first 10 labels initially
+  
+      var ctx = document.getElementById('pieChart').getContext('2d');
+      var chart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: initialLabels,
+          datasets: [{
+            data: data,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.7)',
+              'rgba(54, 162, 235, 0.7)',
+              'rgba(255, 206, 86, 0.7)',
+              'rgba(75, 192, 192, 0.7)',
+              'rgba(153, 102, 255, 0.7)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+
+        }
+      });
+  
+      var showMoreButton = document.getElementById('showMoreButton');
+      showMoreButton.addEventListener('click', function () {
+        chart.data.labels = labels; // Assign all labels to the chart
+        chart.update(); // Update the chart to display all labels
+        showMoreButton.style.display = 'none'; // Hide the "Show More" button
+      });
+    });
+  </script>
+  
+  <script>
+    var maxRows = 10; // Define the maximum number of rows per page
+    var currentPage = 1; // Current page number
+
+    // Function to show a specific page
+    function showPage(pageNum) {
+      var table = document.getElementById("currency-table");
+      var rows = table.getElementsByClassName("table-row");
+
+      var startIndex = (pageNum - 1) * maxRows;
+      var endIndex = startIndex + maxRows;
+
+      for (var i = 0; i < rows.length; i++) {
+        if (i >= startIndex && i < endIndex) {
+          rows[i].style.display = "table-row";
+        } else {
+          rows[i].style.display = "none";
+        }
+      }
+    }
+
+    // Function to navigate to the previous page
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        showPage(currentPage);
+        setActivePage();
+      }
+    }
+
+    // Function to navigate to the next page
+    function nextPage() {
+      var table = document.getElementById("currency-table");
+      var rows = table.getElementsByClassName("table-row");
+
+      var totalPages = Math.ceil(rows.length / maxRows);
+
+      if (currentPage < totalPages) {
+        currentPage++;
+        showPage(currentPage);
+        setActivePage();
+      }
+    }
+
+    showPage(currentPage); // Call the function to initially show the first page
+
+    // Event listeners for the Previous and Next buttons
+    document.getElementById("prevBtn").addEventListener("click", prevPage);
+    document.getElementById("nextBtn").addEventListener("click", nextPage);
+
+    // Function to generate the page numbers
+    function generatePageNumbers() {
+      var table = document.getElementById("currency-table");
+      var rows = table.getElementsByClassName("table-row");
+
+      var totalPages = Math.ceil(rows.length / maxRows);
+      var pageNumbersDiv = document.getElementById("pageNumbers");
+      pageNumbersDiv.innerHTML = ""; // Clear previous page numbers
+
+      for (var i = 1; i <= totalPages; i++) {
+        var pageNumber = document.createElement("button");
+        pageNumber.textContent = i;
+        pageNumber.classList.add("mx-1", "px-3", "py-1", "bg-gray-200", "hover:bg-gray-300", "focus:bg-gray-300");
+        pageNumber.addEventListener("click", function () {
+          currentPage = parseInt(this.textContent);
+          showPage(currentPage);
+          setActivePage();
+        });
+        pageNumbersDiv.appendChild(pageNumber);
+      }
+
+      setActivePage(); // Set the active page initially
+    }
+
+    // Function to set the active page
+    function setActivePage() {
+      var pageNumbers = document.getElementById("pageNumbers").getElementsByTagName("button");
+
+      for (var i = 0; i < pageNumbers.length; i++) {
+        pageNumbers[i].classList.remove("active-page");
+      }
+
+      pageNumbers[currentPage - 1].classList.add("active-page");
+    }
+
+    generatePageNumbers(); // Call the function to initially generate page numbers
+  </script>
+</body>
+{% endblock content %}

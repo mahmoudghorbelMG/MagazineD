@@ -1,0 +1,191 @@
+{% load static %}
+{% load socialaccount %}
+{% load i18n %}
+{% load socialaccount %}
+{% providers_media_js %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/sign.css'%}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Sign</title>
+</head>
+
+<body>
+    <div class="site login-show" id="page">
+        <div class="container">
+            <div class="wrapper">
+                <!-- Sign in form-->
+                <div class="login">
+                    <div class="content-heading">
+                        <div class="y-style">
+                            <div class="logo"><img src="{% static 'images/Logowhite.svg'%}" alt=""></div>
+                            <div class="welcome">
+                                <h2>Welcome <br>Back !</h2>
+                                <p>Get start to enhence <br>your knowladge</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-form">
+                        <div class="y-style">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                {% if signin_error %}
+                                {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}><i
+                                        class="ri-error-warning-line "></i>{{ message }}</li>
+                                    {% endfor %}
+                                    {% endif %}
+                                    <p class="input-field">
+                                        <input type="email" name="email" id="email" required>
+                                        <span>email</span>
+                                    </p>
+                                    <div class="input-field">
+                                        <input type="password" name="password" id="password" required>
+                                        <span>Password</span>
+                                        <i class="toggle-password fas fa-eye" style="margin-right : 20px"></i>
+                                    </div>
+
+                                    <p class="check">
+                                        <input type="checkbox" id="remember">
+                                        <label for="remember">Remember me</label>
+                                    </p>
+                                    <p class="forgot"><a href="{%url 'reset_password' %}">Forget password ?</a></p>
+                                    <p> <button type="submit" onclick="checkCaptcha()" name='signin'>Login</button></p>
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        {{ captcha }}
+                                    </form>
+                            </form>
+                            <div class="social">
+
+                                <p><span>Or sign up with</span></p>
+                                <a href="{% provider_login_url 'google'%}?next=/" class="btn-google">
+                                    <button class="google-btn">
+                                        <img src="https://img.icons8.com/color/16/000000/google-logo.png" />
+                                        Login with Google
+                                    </button>
+                                </a>
+
+                            </div>
+
+                            <div class="afterform">
+                                <p>Don't have an acccount</p>
+                                <a href="#" class="t-signup">Register</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- Sign up form-->
+                <div class="signup">
+                    <div class="content-heading">
+                        <div class="y-style">
+                            <div class="logo"><img src="{% static 'images/Logowhite.svg'%}" alt=""></div>
+                            <div class="welcome">
+                                <h2>Sign Up <br>Now</h2>
+                                <p>ready to explore a different <br> experence. <br>Join now for Free</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-form">
+                        <div class="y-style">
+                            <form action="" method="POST">
+                                {% csrf_token %}
+                                {% if signup_error %}
+                                {% for message in messages %}
+                                <li{% if message.tags %} class="{{ message.tags }}" {% endif %}><i
+                                        class="ri-error-warning-line "></i>{{ message }}</li>
+                                    {% endfor %}
+                                    {% endif %}
+                                    <div class="input-field">
+                                        <input type="text" id="name" name="name" required>
+                                        <span>First Name</span>
+                                    </div>
+                                    <div class="input-field">
+                                        <input type="text" id="fname" name="fname" required>
+                                        <span>Last Name</span>
+                                    </div>
+                                    <div class="input-field">
+                                        <input type="text" name="email" id="email" required>
+                                        <span>Email</span>
+                                    </div>
+                                    <div class="input-field">
+                                        <input type="password" name="password" id="password1" required>
+                                        <span>Password</span>
+                                    </div>
+                                    <div class="input-field">
+                                        <input type="password" name="cpassword" id="cpassword" required>
+                                        <span> Confirm Password</span>
+                                    </div>
+                                    <p> <button type="submit" name='signup'>Sign up</button></p>
+                            </form>
+
+                            <div class="social">
+
+                                <p><span>Or sign up with</span></p>
+                                <a href="{% provider_login_url 'google'%}?next=/" class="btn-google">
+                                    <button class="google-btn">
+                                        <img src="https://img.icons8.com/color/16/000000/google-logo.png" />
+                                        Login with Google
+                                    </button>
+                                </a>
+                            </div>
+
+                            <div class="afterform">
+                                <p>Don't have an acccount</p>
+                                <a href="#" class="t-Login">Login here</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="{%static 'js/sign.js'%}"></script>
+    <script>
+        const togglePassword = document.querySelector('.toggle-password');
+        const passwordInput = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+    </script>
+    <script>
+        // get the password input field
+        const passwordinput = document.getElementById('password1');
+
+        // add a "blur" event listener to the password field
+        passwordinput.addEventListener('blur', () => {
+            const passwordValue = passwordinput.value;
+            console.log(passwordinput)
+            // define a regular expression to check if the password meets the required format
+            const passwordFormat = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+            if (!passwordFormat.test(passwordValue)) {
+                // show a Swal alert to the user if the password format is not valid
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid password format',
+                    text: 'Your password must be at least 8 characters long and contain at least one letter and one number',
+                });
+                // clear the password field
+                passwordinput.value = '';
+            }
+        });
+    </script>
+</body>
+
+</html>

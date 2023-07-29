@@ -1,0 +1,17 @@
+{% load static %}
+<link rel="stylesheet" href="{%static 'css/password_reset.css'%}">
+
+<body>
+
+  <div class="container">
+    <h4>Confirmer la suppression de l'article "{{ product.Product_name }}"</h4>
+    <form method="post">
+      {% csrf_token %}
+      <p>Êtes-vous sûr de vouloir supprimer cet article ? Cette action est irréversible.</p>
+      <input type="hidden" name="article_id" value="{{ article.pk }}">
+      <button type="submit" name="action" value="supprimer" class="btn" style="width: 80%;">supprimer</button>
+      <button type="submit" name="action" value="Annuler" class="btn" style="width: 80%;"style="width: 80%;">Annuler</button>
+    </form>
+
+  </div>
+</body>

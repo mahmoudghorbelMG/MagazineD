@@ -1,0 +1,19 @@
+<h1>Top 5 Orders</h1>
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>products</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for order in orders %}
+      <tr>
+        <td>{{ order.user.username }}</td>
+        <td>{{ order.products }}</td>
+        <td>{{ order.total }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>

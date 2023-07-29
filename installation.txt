@@ -1,0 +1,7 @@
+pip install django-countries 
+pip install django-recaptcha  
+ pip install django-simple-captcha
+pip install django-notifications-hq
+ pip install django-ckeditor  
+pip install django-allauth
+pip install djangorestframework

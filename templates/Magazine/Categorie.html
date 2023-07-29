@@ -1,0 +1,103 @@
+{% extends 'Magazine/base.html'%}
+{% block Categorie %}
+<section class="s-content">
+
+
+    <!-- page header
+    ================================================== -->
+    <div class="s-pageheader">
+        <div class="row">
+            <div class="column large-12">
+                <h1 class="page-title">
+                    <span class="page-title__small-type">Category</span>
+                    {{series.title}}
+                </h1>
+            </div>
+        </div>
+    </div> <!-- end s-pageheader-->
+    
+
+    <!-- masonry
+    ================================================== -->
+    <div class="s-bricks s-bricks--half-top-padding">
+
+        <div class="masonry">
+            <div class="bricks-wrapper h-group">
+
+                <div class="grid-sizer"></div>
+
+                <div class="lines">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                {%for article in articles%}
+                <article class="brick entry" data-aos="fade-up">
+
+                    <div class="entry__thumb">
+                        <a href="{%url 'add_comment' article.id %}" class="thumb-link">
+                            <img src="{{ article.image.url }}"alt="">
+                        </a>
+                    </div> <!-- end entry__thumb -->
+
+                    <div class="entry__text">
+                        <div class="entry__header">
+                            <h1 class="entry__title"><a href="https://www.dreamhost.com/r.cgi?287326">{{article.title|truncatechars:30}}</a></h1>
+                            
+                            <div class="entry__meta">
+                                <span class="byline">By:
+                                    <span class='author'>
+                                        <a href="https://www.dreamhost.com/r.cgi?287326">{{article.author}}</a>
+                                </span>
+                            </span>
+                                <span class="cat-links">
+                                    <a href="{% url 'category_page' series.slug %}">{{article.series.title}}</a>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="entry__excerpt">
+                            <p>
+                               {{article.content|truncatechars:200|safe}} 
+                            </p>
+                        </div>
+                        <a class="entry__more-link" href="{%url 'add_comment' article.id %}">Learn More</a>
+                    </div> <!-- end entry__text -->
+                
+                </article> <!-- end article -->
+                {% endfor %}
+              
+            </div> <!-- end brick-wrapper -->
+
+        </div> <!-- end masonry -->
+        <div class="row">
+            <div class="column large-12">
+                <nav class="pgn">
+                    <ul>
+                        {% if articles.has_previous %}
+                        <li>
+                            <a class="pgn__prev" href="?page={{ articles.previous_page_number }}">&laquo; Prev</a>
+                        </li>
+                        {% endif %}
+        
+                        {% for i in articles.paginator.page_range %}
+                            {% if articles.number == i %}
+                            <li><span class="pgn__num current">{{ i }}</span></li>
+                            {% else %}
+                            <li><a class="pgn__num" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+        
+                        {% if articles.has_next %}
+                        <li>
+                            <a class="pgn__next" href="?page={{ articles.next_page_number }}">Next &raquo;</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div> <!-- end s-bricks -->
+
+</section> <!-- end s-content -->
+{% endblock%}

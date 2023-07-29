@@ -1,0 +1,42 @@
+{% extends 'dashboard/dashbord.html' %}
+{% block notifications %}
+{%load static%}
+<div class="notification-wrapper">
+  <div class="container-fluid">
+    <!-- ========== title-wrapper start ========== -->
+    <div class="title-wrapper pt-30">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <div class="title mb-30">
+            <h2>Notifications</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-style">
+      {% for notification in request.user.notifications.unread %}
+      <div class="single-notification">
+        <div class="notification">
+
+          <div class="image warning-bg">
+            <span>  <img src="{{ user.profile.picture.url }}" alt="{{ user.username }}" > </span>
+          </div>
+          <a href="#" class="content">
+
+            <h6>{{ notification.actor }} {{ notification.verb }}</h6>
+            <span class="time">{{ notification.timestamp }}</span>
+          </a>
+        </div>
+      </div>
+      {% empty %}
+       <p>  No new notifications </p>
+      {% endfor %}
+
+    </div>
+
+  </div>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'dashboard/dashbord.html' %}
+
+{% block Product %}
+<!-- ========== title-wrapper start ========== -->
+<div class="title-wrapper pt-30">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <div class="title mb-30">
+        <h2>Products</h2>
+      </div>
+    </div>
+
+<div class="col-lg-12">
+  <div class="card-style mb-30">
+    <h6 class="text-medium  ml-30">Posts</h6>
+    <form method="post" action="{% url 'add_product' %}">
+      {% csrf_token %}
+      <button type="submit" class="main-btn primary-btn btn-hover ml-30">Add Product</button>
+    </form>
+    <div class="table-wrapper table-responsive">
+      <table class="table" id="table">
+        <thead>
+          <tr>
+            <th class="min-width">
+              <h6 class="text-sm text-medium">Image</h6>
+            </th>
+            <th class="min-width">
+              <h6 class="text-sm text-medium">Product Name</h6>
+            </th>
+            <th>
+              <h6 class="text-sm text-medium">Description</h6>
+            </th>
+            <th>
+              <h6 class="text-sm text-medium">Price</h6>
+            </th>
+            <th>
+              <h6 class="text-sm text-medium">Brand</h6>
+            </th>
+            <th>
+              <h6 class="text-sm text-medium">Quantity in Stock</h6>
+            </th>
+            <th>
+              <h6 class="text-sm text-medium">Series</h6>
+            </th>
+            <th>
+              <h6 class="text-sm text-medium">Action</h6>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in products %}
+          <tr>
+            <td>
+              <img src="{{ product.image.url }}" alt="{{ product.Product_name }}" width="50" height="50">
+            </td>
+            <td>
+              <p class="text-sm">{{ product.Product_name }}</p>
+            </td>
+            <td>
+              <p class="text-sm">{{ product.description | truncatechars:50 }}</p>
+            </td>
+            <td>
+              <p class="text-sm">{{ product.price }} {{ product.currency }}</p>
+            </td>
+            <td>
+              <p class="text-sm">{{ product.brand }}</p>
+            </td>
+            <td>
+              <p class="text-sm">{{ product.quantity_in_stock }}</p>
+            </td>
+            <td>
+              <p class="text-sm">{{ product.series.title }}</p>
+            </td>
+            <td>
+              <div class="action">
+                {% if product.owner == user %}
+                <ul>
+                  <li>
+                    <a href="{% url 'update_product' product.id %}" class="text-gray"><i class="ri-pencil-line"></i></a>
+                  </li>
+                  <li class="dropdown-item">
+                    <a href="{% url 'delete_product' product.id %}" class="text-gray"><i class="ri-delete-bin-line"></i></a>
+                  </li>
+                </ul>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

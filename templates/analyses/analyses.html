@@ -1,0 +1,241 @@
+{% extends 'analyses/base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Cryptocurrencies Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- Embed the TradingView Coin Tick - Menu Bar Crypto widget -->
+  <div class="tradingview-widget-container" style="margin-top : 90px">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js"
+      async>
+        {
+          "symbols": [
+            {
+              "proName": "BITSTAMP:BTCUSD",
+              "title": "BTC/USD"
+            },
+            {
+              "proName": "BITSTAMP:ETHUSD",
+              "title": "ETH/USD"
+            },
+            {
+              "proName": "BITSTAMP:XRPUSD",
+              "title": "XRP/USD"
+            },
+            {
+              "proName": "BITSTAMP:LTCUSD",
+              "title": "LTC/USD"
+            },
+            {
+              "proName": "BITSTAMP:BCHUSD",
+              "title": "BCH/USD"
+            },
+            {
+              "proName": "BITSTAMP:ADAUSD",
+              "title": "ADA/USD"
+            },
+            {
+              "proName": "BITSTAMP:DOGEUSD",
+              "title": "DOGE/USD"
+            },
+            {
+              "proName": "BITSTAMP:DOTUSD",
+              "title": "DOT/USD"
+            },
+            {
+              "proName": "BITSTAMP:UNIUSD",
+              "title": "UNI/USD"
+            },
+            {
+              "proName": "BITSTAMP:LINKUSD",
+              "title": "LINK/USD"
+            }
+          ],
+            "showSymbolLogo": true,
+              "colorTheme": "light",
+                "isTransparent": false,
+                  "displayMode": "adaptive",
+                    "locale": "en"
+        }
+      </script>
+  </div>
+  <!-- TradingView Widget BEGIN -->
+  <div class="tradingview-widget-container">
+    <div id="tradingview_a60c0"></div>
+    <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow"
+        target="_blank"><span class="blue-text">Track all markets</span></a> on TradingView</div>
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+      new TradingView.widget(
+        {
+          "height": "100%",
+          "autosize": true,
+          "symbol": "NASDAQ:AAPL",
+          "interval": "D",
+          "timezone": "Etc/UTC",
+          "theme": "light",
+          "style": "1",
+          "locale": "en",
+          "toolbar_bg": "#f1f3f6",
+          "enable_publishing": false,
+          "allow_symbol_change": true,
+          "container_id": "tradingview_a60c0"
+        }
+      );
+    </script>
+  </div>
+  <!-- TradingView Widget END -->
+  <!-- TradingView Widget BEGIN -->
+<div class="tradingview-widget-container">
+  <div class="tradingview-widget-container__widget"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div>
+  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js" async>
+  {
+  "width": "100%",
+  "height": "100%",
+  "symbolsGroups": [
+    {
+      "name": "Indices",
+      "originalName": "Indices",
+      "symbols": [
+        {
+          "name": "FOREXCOM:SPXUSD",
+          "displayName": "S&P 500"
+        },
+        {
+          "name": "FOREXCOM:NSXUSD",
+          "displayName": "US 100"
+        },
+        {
+          "name": "FOREXCOM:DJI",
+          "displayName": "Dow 30"
+        },
+        {
+          "name": "INDEX:NKY",
+          "displayName": "Nikkei 225"
+        },
+        {
+          "name": "INDEX:DEU40",
+          "displayName": "DAX Index"
+        },
+        {
+          "name": "FOREXCOM:UKXGBP",
+          "displayName": "UK 100"
+        }
+      ]
+    },
+    {
+      "name": "Futures",
+      "originalName": "Futures",
+      "symbols": [
+        {
+          "name": "CME_MINI:ES1!",
+          "displayName": "S&P 500"
+        },
+        {
+          "name": "CME:6E1!",
+          "displayName": "Euro"
+        },
+        {
+          "name": "COMEX:GC1!",
+          "displayName": "Gold"
+        },
+        {
+          "name": "NYMEX:CL1!",
+          "displayName": "Crude Oil"
+        },
+        {
+          "name": "NYMEX:NG1!",
+          "displayName": "Natural Gas"
+        },
+        {
+          "name": "CBOT:ZC1!",
+          "displayName": "Corn"
+        }
+      ]
+    },
+    {
+      "name": "Bonds",
+      "originalName": "Bonds",
+      "symbols": [
+        {
+          "name": "CME:GE1!",
+          "displayName": "Eurodollar"
+        },
+        {
+          "name": "CBOT:ZB1!",
+          "displayName": "T-Bond"
+        },
+        {
+          "name": "CBOT:UB1!",
+          "displayName": "Ultra T-Bond"
+        },
+        {
+          "name": "EUREX:FGBL1!",
+          "displayName": "Euro Bund"
+        },
+        {
+          "name": "EUREX:FBTP1!",
+          "displayName": "Euro BTP"
+        },
+        {
+          "name": "EUREX:FGBM1!",
+          "displayName": "Euro BOBL"
+        }
+      ]
+    },
+    {
+      "name": "Forex",
+      "originalName": "Forex",
+      "symbols": [
+        {
+          "name": "FX:EURUSD",
+          "displayName": "EUR/USD"
+        },
+        {
+          "name": "FX:GBPUSD",
+          "displayName": "GBP/USD"
+        },
+        {
+          "name": "FX:USDJPY",
+          "displayName": "USD/JPY"
+        },
+        {
+          "name": "FX:USDCHF",
+          "displayName": "USD/CHF"
+        },
+        {
+          "name": "FX:AUDUSD",
+          "displayName": "AUD/USD"
+        },
+        {
+          "name": "FX:USDCAD",
+          "displayName": "USD/CAD"
+        }
+      ]
+    }
+  ],
+  "showSymbolLogo": true,
+  "colorTheme": "light",
+  "isTransparent": false,
+  "locale": "en"
+}
+  </script>
+</div>
+<!-- TradingView Widget END -->
+</body>
+
+</html>
+
+{% endblock content %}

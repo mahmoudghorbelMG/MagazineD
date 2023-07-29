@@ -1,0 +1,160 @@
+{% extends 'dashboard/dashbord.html' %}
+{% block main %}
+
+<div class="main">
+    <!-- ========== title-wrapper start ========== -->
+    <div class="title-wrapper pt-30">
+        <div class="row align-items-center">
+            {% if user.is_staff or user.is_superuser %}
+            <div class="col-md-6">
+                <div class="title mb-30">
+                    <h2>Main</h2> 
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="icon-card mb-30">
+                        <div class="icon purple">
+                            <i class="lni lni-cart"></i>
+                        </div>
+                        <div class="content">
+                            <h6 class="mb-10">New Orders</h6>
+                            <h3 class="text-bold mb-10">{{ order_count }}</h3>
+                        </div>
+                    </div>
+                    <!-- End Icon Cart -->
+                </div>
+                <!-- End Col -->
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="icon-card mb-30">
+                        <div class="icon success">
+                            <i class="lni lni-dollar"></i>
+                        </div>
+                        <div class="content">
+                            <h6 class="mb-10">Total Income</h6>
+                            <h3 class="text-bold mb-10">${{ total_price }}</h3>
+                            </p>
+                        </div>
+                    </div>
+                    <!-- End Icon Cart -->
+                </div>
+                <!-- End Col -->
+                <!-- End Col -->
+                <div class="col-xl-3 col-lg-4 col-sm-6">
+                    <div class="icon-card mb-30">
+                        <div class="icon orange">
+                            <i class="lni lni-user"></i>
+                        </div>
+                        <div class="content">
+                            <h6 class="mb-10">New User</h6>
+                            <h3 class="text-bold mb-10">{{user_count}}</h3>
+                        </div>
+                    </div>
+                    <!-- End Icon Cart -->
+                </div>
+                <!-- End Col -->
+            </div>
+            {% endif %} 
+            <div class="title-wrapper pt-30">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="title mb-30">
+                            <h2>Orders</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card-style mb-30">
+                    <div class="
+          title
+          d-flex
+          flex-wrap
+          align-items-center
+          justify-content-between
+        ">
+                        <div class="left">
+                            <h6 class="text-medium mb-30">Sales History</h6>
+                        </div>
+
+                    </div>
+                    <!-- End Title -->
+                    <div class="table-responsive">
+                        <table class="table top-selling-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <h6 class="text-sm text-medium">Product</h6>
+                                    </th>
+                                    <th class="min-width">
+                                        <h6 class="text-sm text-medium">
+                                            Price
+                                        </h6>
+                                    </th>
+                                    <th class="min-width">
+                                        <h6 class="text-sm text-medium">
+                                            Quantity
+                                        </h6>
+                                    </th>
+                                    <th class="min-width">
+                                        <h6 class="text-sm text-medium">
+                                            Total
+                                        </h6>
+                                    </th>
+                                    <th>
+                                        <h6 class="text-sm text-medium text-end">
+                                            Actions
+                                        </h6>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                {% for product, quantity in order.get_products %}
+                                <tr>
+                                    <td>
+                                        <div class="product">
+                                            <div class="image">
+                                                <img src="{{ product.image.url }}" width="100" height="100">
+                                            </div>
+                                            <p class="text-sm">{{ product.Product_name }}</p>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="text-sm">{{ product.price }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-sm">{{ quantity }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-sm">{{ order.total }}</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6">You have no orders.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <!-- End Table -->
+                    </div>
+                </div>
+            </div>
+            </thead>
+            <tbody>
+
+
+                <tr>
+                    <td>{{ product.price }}</td>
+                    <td>{{ quantity }}</td>
+                    <td>{{ order.total }}</td>
+                </tr>
+
+            </tbody>
+            </table>
+
+        </div>
+        {% endblock %}

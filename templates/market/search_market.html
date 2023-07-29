@@ -1,0 +1,109 @@
+{% extends 'market/base.html' %}
+{% load static %}
+
+{% block market %}
+<section class="shop spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="shop__sidebar">
+                    <div class="shop__sidebar__search">
+                        <form action="{% url 'search_market' %}" method="GET">
+                            <input type="text" name="q" placeholder="Search..." value="{{ query }}">
+                            <button type="submit">
+                                <span><i class="ri-search-line"></i></span>
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="shop__sidebar__accordion">
+                        <div class="accordion" id="accordionExample">
+                            <div class="card">
+                                <div class="card-heading">
+                                    <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
+                                </div>
+                                <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div class="shop__sidebar__categories">
+                                            <ul class="nice-scroll" style="overflow-y: hidden; outline: none;" tabindex="1">
+                                                {% for s in series %}
+                                                <li><a href="{% url 'series_detail' series_id=s.id %}">{{ s.title }} ({{ s.product_set.count }})</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <div class="card">
+                                <div class="card-heading">
+                                    <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+                                </div>
+                                <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div class="shop__sidebar__price">
+                                            <ul>
+                                                <li><a href="?min_price=0&max_price=50">$0.00 - $50.00</a></li>
+                                                <li><a href="?min_price=50&max_price=100">$50.00 - $100.00</a></li>
+                                                <li><a href="?min_price=100&max_price=150">$100.00 - $150.00</a></li>
+                                                <li><a href="?min_price=150&max_price=200">$150.00 - $200.00</a></li>
+                                                <li><a href="?min_price=200&max_price=250">$200.00 - $250.00</a></li>
+                                                <li><a href="?min_price=250">250.00+</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="shop__product__option">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="shop__product__option__left">
+                            </div>
+                        </div>                     
+                </div>
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+
+                        <div class="product__item">
+
+                            <div class="product__item__pic set-bg" data-setbg="{{ product.image.url }}"
+                                style="background-image: url({{ product.image.url }}); ">
+
+                                <ul class="product__hover">
+                                    <li><a href="{% url 'details'  product.id %}"><img
+                                                src="{% static 'images/view.png'%}" alt=""
+                                                style="width: 40px; "></a>
+                                    </li>
+                                </ul>
+
+                            </div>
+
+                            <div class="product__item__text">
+                                <h6>{{product.Product_name }}
+                                    
+                                    {% if product.is_in_stock %}
+                                    <p style="color:green;">In Stock</p>
+                                 {% else %}
+                                    <p style="color:red;">Out of Stock</p>
+                                 {% endif %} </h6>
+                                <a class="add-cart" href="{% url 'add_to_cart' product.id %}"> + Add To
+                                    Cart</a>
+                            </div>
+
+                            <h5>{{ product.price }} {{product.currency }}</h5>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock market %}

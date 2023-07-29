@@ -1,0 +1,229 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="{%static 'css/dashboard.css'%}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.lineicons.com/4.0/lineicons.css" />
+
+    <title>Document</title>
+</head>
+
+<body>
+    <aside class="sidebar-nav-wrapper">
+        <div class="navbar-logo">
+            <a href="{% url 'Home'%}"><img src="{%static 'images/Logo.svg'%}" alt="logo" /></a>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li class="nav-item ">
+                    <a href="{% url  'main'  %}">
+                        <span class="icon">
+                            <i class="ri-dashboard-line"></i>
+                        </span>
+                        <span class="text">Main</span>
+                    </a>
+                </li>
+                <li class="nav-item nav-item-has-children">
+                    <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_2"
+                        aria-controls="ddmenu_2" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="icon">
+                            <i class="ri-pages-line"></i>
+                        </span>
+                        <span class="text">Article</span>
+                    </a>
+                    <ul id="ddmenu_2" class="collapse dropdown-nav">
+                        <li>
+                            <a href="{% url 'article'  %}"> Posts </a>
+                        </li>
+                        {% if user.is_staff or user.is_superuser %}
+                        <li>
+                            <a href="{% url  'articles_en_attente' %}"> Pending Articles </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </li>
+                <li class="nav-item nav-item-has-children">
+                    <a href="#0" class="collapsed" data-bs-toggle="collapse" data-bs-target="#ddmenu_3"
+                        aria-controls="ddmenu_3" aria-expanded="false" aria-label="Toggle navigation" disabled>
+                        <span class="icon">
+                            <i class="ri-shopping-cart-line"></i>
+                        </span>
+                        <span class="text">Product</span>
+                    </a>
+                    <ul id="ddmenu_3" class="collapse dropdown-nav">
+                        <li>
+                            <a href="{% url 'product'  %}"> My Product </a>
+                            <a href="{% url 'user_orders' %}">Orders</a>
+                        </li>
+                    </ul>
+                </li>
+                
+                <span class="divider">
+                    <hr />
+                </span>
+                <li class="nav-item ">
+                    <a href="{% url 'Update'  %}">
+                        <span class="icon">
+                            <i class="ri-shield-user-line"></i>
+                        </span>
+                        <span class="text">Profile</span>
+                    </a>
+                </li>
+                <span class="divider">
+                    <hr />
+                </span>
+                <li class="nav-item">
+                    <a href="{% url  'notifications' %}">
+                        <span class="icon">
+                            <i class="ri-notification-3-line"></i>
+                        </span>
+                        <span class="text">notifications</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="promo-box">
+            <h3>Ahtena Magazine PRO</h3>
+            <p>Become PRO</p>
+            <a href="{% url 'subscription'  %}"  rel="nofollow" class="main-btn primary-btn btn-hover"
+                style="text-decoration: none;">
+                Subscribe Now
+            </a>
+        </div>
+    </aside>
+    <div class="overlay"></div>
+    <!-- ======== sidebar-nav end =========== -->
+
+    <!-- ======== main-wrapper start =========== -->
+    <main class="main-wrapper">
+        <!-- ========== header start ========== -->
+        <header class="header">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-5 col-md-5 col-6">
+                        <div class="header-left d-flex align-items-center">
+                            <div class="menu-toggle-btn mr-20">
+                                <button id="menu-toggle" class="main-btn primary-btn btn-hover">
+                                    <i class="ri-menu-line"></i>
+                                </button>
+                            </div>
+                            <div class="header-search d-none d-md-flex">
+                                <form method="GET" action="{% url 'search_dashboard' %}">
+                                    <input type="text" name="q" placeholder="Search..." />
+                                    <button type="submit"><i class="ri-search-line"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-6">
+                        <div class="header-right">
+
+                            <!-- notification start -->
+                            <div class="notification-box ml-15 d-none d-md-flex">
+                                <button id="notification-button" class="dropdown-toggle" type="button" id="notification"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="ri-notification-3-line"></i>
+                                    <span id="notification-count">{{ request.user.notifications.unread.count }}</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notification">
+                                    {% for notification in request.user.notifications.unread %}
+                                    <li>
+                                        <a href="{{ notification.target_url }}">
+                                            <div class="image">
+                                                <img src="{{ notification.actor.profile.picture.url }}"
+                                                    alt="{{ notification.actor }}" />
+                                            </div>
+                                            {% if user.is_authenticated %}
+                                            <div class="content">
+                                                <h6>{{ notification.actor }} {{ notification.verb }}</h6>
+                                                <span class="time">{{ notification.timestamp }}</span>
+                                            </div>
+                                            {% endif %}
+                                        </a>
+                                    </li>
+                                    {% empty %}
+                                    <li><a href="#">No new notifications</a></li>
+                                    {% endfor %}
+                                </ul>
+                                <!-- notification end -->
+
+                                <!-- profile start -->
+                                <div class="profile-box ml-15">
+                                    <button class="dropdown-toggle bg-transparent border-0" type="button" id="profile"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <div class="profile-info">
+                                            <div class="info">
+                                                <h6>{{ user.username }}</h6>
+                                                <div class="image">
+                                                    <img src="{{ user.profile.picture.url }}" alt="{{ user.username }}"
+                                                        style="max-width: 100px; max-height: 80px;">
+                                                    <span class="status"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <i class="lni lni-chevron-down"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile">
+                                        <li>
+                                            <a href="{% url 'Update'  %}">
+                                                <i class="ri-shield-user-line"></i> View Profile
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url  'notifications' %}">
+                                                <i class="ri-notification-3-line"></i> Notifications
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{% url 'logout'%}">
+                                                <i class="ri-logout-box-r-line"></i> Sign Out </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- profile end -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </header>
+        <section class="section">
+            <div class="container-fluid">
+                {%block main%}{%endblock%}
+                {%block search_dashboard%}{%endblock%}
+                {% block article %}{% endblock %}
+                {% block Subscribe %}{% endblock %}
+                {% block Update %}{% endblock %}
+                {% block Product %}{% endblock %}
+                {% block notifications %}{% endblock %}
+            </div>
+        </section>
+        <!-- ========= All Javascript files linkup ======== -->
+        <script src="{%static 'js/dashboard/main.js'%}"></script>
+        <script src="{%static 'js/dashboard/bootstrap.bundle.min.js'%}"></script>
+        <script src="{%static 'js/dashboard/status.js'%}"></script>
+        <script>
+            document.getElementById("notification-button").addEventListener("click", function () {
+                // Send a POST request to mark all notifications as read
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "{% url 'mark_all_as_read' %}", true);
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                xhr.send();
+
+                // Update the notification count to zero
+                document.getElementById("notification-count").innerHTML = "0";
+            });
+        </script>
+
+
+
+</body>
+
+
+</html>

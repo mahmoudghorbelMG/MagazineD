@@ -1,0 +1,95 @@
+{% extends 'dashboard/dashbord.html' %}
+{% block article %}
+<div class="title-wrapper pt-30">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <div class="title mb-30">
+                <h2>Articles</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class=" col-lg-12">
+    <div class="card-style mb-30">
+        <h6 class="text-medium  ml-30">Posts</h6>
+        <form method="post" action="{% url 'add_article' %}">
+            {% csrf_token %}
+            <button type="submit" class="main-btn primary-btn btn-hover ml-30">Ajouter Articles</button>
+        </form>
+        <div class="table-wrapper table-responsive">
+            <table class="table" id="table">
+                <thead>
+                    <tr>
+                        <th>
+                            <h6 class="text-sm text-medium">Auther</h6>
+                        </th>
+                        <th class="min-width">
+                            <h6 class="text-sm text-medium">
+                                Title
+                            </h6>
+                        </th>
+                        <th class="min-width">
+                            <h6 class="text-sm text-medium">
+                                Breaf
+                            </h6>
+                        </th>
+                        <th class="min-width">
+                            <h6 class="text-sm text-medium">
+                                Status
+                            </h6>
+                        </th>
+                        <th>
+                            <h6 class="text-sm text-medium ">
+                                Actions
+                            </h6>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for article in articles %}
+                    <tr>
+                        <td>
+                            <div class="product">
+                                <p class="text-sm">{{ article.author.username }}</p>
+                            </div>
+                        </td>
+                        <td>
+                            <p class="text-sm">{{ article.title }}</p>
+                        </td>
+                        <td>
+                            <p class="text-sm">{{ article.content|truncatechars:2|safe }} <a
+                                    href="{% url 'view_article' article.pk %}" style="text-decoration: none;">Read
+                                    more</a></p>
+                        </td>
+                        {% csrf_token %}
+                        <td>
+                            <span class="status-btn close-btn" id="etat">{{ article.etat}}</span>
+                        </td>
+                        <td>
+                            <div class="action ">
+                                {% if article.author == user %}
+                                <ul>
+                                    <li>
+                                        <a href="{% url 'update_article' article.id %}" class="text-gray"><i
+                                                class="ri-pencil-line"></i></a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a href="{%url 'delete_article' article.id %}" class="text-gray"><i
+                                                class="ri-delete-bin-line"></i></a>
+                                    </li>
+                                </ul>
+
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
+
+    {% endblock %}

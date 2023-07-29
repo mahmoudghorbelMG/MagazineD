@@ -1,0 +1,39 @@
+{% load static%}
+<link rel="stylesheet" href="{% static 'css/verification.css'%}">
+<section>
+    <div class="title">OTP</div>
+    <img src="{% static 'images/LogoWhite.svg'%}" alt="">
+    <div class="title">Verification Code</div>
+    <p>A verification code has been sent to {{ email }}. Please enter it below:</p>
+    <form method="post">
+        {% csrf_token %}
+        <div id='inputs'>
+            <input id='input1' type='text' maxLength="1" name="input1" required />
+            <input id='input2' type='text' maxLength="1" name="input2" required />
+            <input id='input3' type='text' maxLength="1" name="input3" required />
+            <input id='input4' type='text' maxLength="1" name="input4" required />
+            <input id='input5' type='text' maxLength="1" name="input5" required />
+            <input id='input6' type='text' maxLength="1" name="input6" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Verify</button>
+    </form>
+    <script>
+        const inputs = document.querySelectorAll('input[type="text"]');
+
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value.length === input.maxLength) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (event) => {
+                if (event.key === 'Backspace' && input.value.length === 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+    </script>
+
+
+</section>

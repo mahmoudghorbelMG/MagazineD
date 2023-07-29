@@ -1,0 +1,100 @@
+{% extends 'analyses/base.html' %}
+{% block content %}
+<style>
+    .stock-table {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      border-radius: 4px;
+    }
+  
+    .stock-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+  
+    .stock-table th,
+    .stock-table td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #E5E7EB;
+    }
+  
+    .stock-table th {
+      font-weight: bold;
+    }
+  
+    .stock-table tbody tr:hover {
+      background-color: #F3F4F6;
+    }
+  </style>
+  
+  
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Function to show a specific table
+            function showTable(tableId) {
+                var tables = document.getElementsByClassName('stock-table');
+                for (var i = 0; i < tables.length; i++) {
+                    if (tables[i].id === tableId) {
+                        tables[i].style.display = 'block';
+                    } else {
+                        tables[i].style.display = 'none';
+                    }
+                }
+            }
+
+            // Event listeners for the buttons
+            var btnTrending = document.getElementById('btnTrending');
+            var btnLosers = document.getElementById('btnLosers');
+            var btnGainers = document.getElementById('btnGainers');
+
+            btnTrending.addEventListener('click', function() {
+                showTable('table_Trending');
+            });
+
+            btnLosers.addEventListener('click', function() {
+                showTable('table_today_losers');
+            });
+
+            btnGainers.addEventListener('click', function() {
+                showTable('table_today_Gainers');
+            });
+
+            // Show the 'table_Trending' by default
+            showTable('table_Trending');
+        });
+    </script>
+        <script>
+            window.addEventListener('DOMContentLoaded', (event) => {
+                // Function to show the table_Trending
+                function showTrendingTable() {
+                    var tableTrending = document.getElementById('table_Trending');
+                    if (tableTrending) {
+                        tableTrending.style.display = 'block';
+                    }
+                }
+                
+                // Call the function when the page loads
+                showTrendingTable();
+            });
+        </script>
+<body>
+    <section class="s-content">
+        <div class="flex justify-center space-x-4">
+            <button class="W-50 h-16 rounded-md bg-indigo-600 text-white text-base font-semibold shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600" id="btnTrending">Show Trending </button>
+            <button class="w-50 h-16 rounded-md bg-indigo-600 text-white text-base font-semibold shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600" id="btnLosers">Show Today's Losers</button>
+            <button class="w-50 h-16 rounded-md bg-indigo-600 text-white text-base font-semibold shadow-sm hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-600" id="btnGainers">Show Today's Gainers </button>
+          </div>
+          
+          
+    
+    {% for table in tables %}
+        <div id="{{ table.id }}" class="stock-table" style="display: none;">
+            {{ table.html|safe }}
+        </div>
+    {% endfor %}
+    </section>
+</body>
+{% endblock content %}

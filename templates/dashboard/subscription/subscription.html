@@ -1,0 +1,40 @@
+{% extends 'dashboard/dashbord.html' %}
+{% block Subscribe %}
+{% load static %}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://js.stripe.com/v3/"></script> 
+<script src="{% static 'js/main.js' %}"></script>
+<script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<!-- ========== title-wrapper start ========== -->
+<div class="title-wrapper pt-30">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="title mb-30">
+          <h2>Subscription</h2>
+        </div>
+      </div>
+<div class="container mb-5 mt-5">
+    <div class="pricing card-deck flex-column flex-md-row mb-3">
+       
+      
+        <div class="card card-pricing text-center px-3 mb-12">
+            <span class="h6 w-60 mx-auto px-4 py-1 rounded-bottom bg-primary text-white shadow-sm">VIP</span>
+            <div class="bg-transparent card-header pt-4 border-0">
+                <h1 class="h1 font-weight-normal text-primary text-center mb-0" data-pricing-value="60">$<span class="price">12</span><span class="h6 text-muted ml-2">/ per month</span></h1>
+            </div>
+            <div class="card-body pt-0">
+                <ul class="list-unstyled mb-4">
+                    <li>You can Sell your product on the merge</li>
+                    <li>Get Access to our analyses section</li>
+                </ul>
+               <a> <button type="button" class="btn btn-outline-secondary mb-3" id="submitBtn"> <a href="{% url 'under_development'  %}"> Subscribe </a> </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Post</title>
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/articles/style.css'%}" />
+</head>
+
+<body>
+
+  <div class="logo" style="padding-top: 2em;">
+    <img src="{%static 'images/logo.svg'%}" alt="">
+  </div>
+  <div class="container">
+    <h4>Add Product....</h4>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.media }}
+      {{ form.as_p }}
+      <div class="form-group">
+        <label for="id_image">Product Image</label>
+        <input type="file" class="form-control-file" id="id_image" name="image">
+        <small class="form-text text-muted">The selected image will be displayed in the market.<br>The image must be in
+          JPEG format.</small>
+      </div>
+      <input type="submit" class="btn" value="Add">
+
+    </form>
+
+</body>
+
+</html>

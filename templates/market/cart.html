@@ -1,0 +1,107 @@
+{% extends 'market/base.html' %}
+{% load static %}
+
+{% block market %}
+
+
+<body>
+    {% if cart_items %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                            <tr>
+
+                                <td class="product__cart__item">
+                                    <div class="product__cart__item__pic">
+                                        <img src="" alt="">
+                                    </div>
+                                    <div class="product__cart__item__text">
+                                        <h6>{{ item.product.Product_name }}</h6>
+                                        <h5>{{ item.product.price}}</h5>
+                                    </div>
+                                </td>
+                                <td class="quantity__item">
+                                    <div class="quantity">
+                                        <form method="POST" action="{% url 'update_cart' item.pk %}">
+                                            {% csrf_token %}
+                                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1"
+                                                max="{{ item.product.quantity_in_stock }}">
+                                            <button type="submit" class="continue__btn update__btn">
+                                                <i class="fa fa-spinner"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td class="cart__price">{{ item.subtotal }} {{ item.product.currency }}</td>
+                                <td class="cart__close">
+                                    <form method="POST" action="{% url 'remove_from_cart' item.pk %}">
+                                        {% csrf_token %}
+                                        <button type="submit" style="border : none ; "><i
+                                                class="fa fa-close"></i></button>
+                                    </form>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="continue__btn">
+                            <a href="{% url 'market'  %}">Continue Shopping</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="">
+            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="cart__discount">
+                    <h6>Discount codes</h6>
+                    <form action="">
+                        <input type="text" placeholder="Coupon code">
+                        <button type="submit">Apply</button>
+                    </form>
+                </div>
+                <div class="cart__total">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>
+                            Subtotal
+                            <span>{{ total_price }} {{ item.product.currency }}</span>
+                        </li>
+                        <li>
+                            total
+                            <span> {{ total_price }} {{ item.product.currency }}</span>
+                        </li>
+                    </ul>
+                    <a href="{% url 'check'  %}" class="primary-btn">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+                {% else %}
+                <p>Your cart is empty.</p>
+                {% endif %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"></script>
+    <script src="{% static 'js/market/main.js' %}"></script>
+</body>
+
+{% endblock market %}

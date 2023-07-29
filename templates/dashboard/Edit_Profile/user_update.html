@@ -1,0 +1,114 @@
+{% extends 'dashboard/dashbord.html' %}
+{% block Update %}
+{%load static%}
+<style>
+  a{
+    text-decoration : none ; 
+  }
+</style>
+<div class="title-wrapper pt-30">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <div class="title mb-30">
+        <h2>Edit Profile</h2>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card-style settings-card-1 mb-30">
+      <div class="
+      title
+      mb-30
+      d-flex
+      justify-content-between
+      align-items-center">
+        <h6>Edit Profile</h6>
+      </div>
+      <div class="profile-info">
+        <div class="d-flex align-items-center mb-30">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="profile-image">
+              <img src="{{ user.profile.picture.url }}" alt="{{ user.username }}"
+                style="max-width: 100px; max-height: 80px;">
+              <div class="update-image">
+                <input type="file" name="picture" id="picture" >
+                <label for=""><i class="ri-upload-cloud-2-line"></i></label>
+              </div>
+            </div>
+            <button type="submit" class="primary-btn btn-sm main-btn">Enregistrer</button>
+          </form>
+          <div class="profile-meta">
+            <h5 class="text-bold text-dark mb-10">{{ user.username }}</h5>
+          </div>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <!-- Username field -->
+          <form method="post">
+            {% csrf_token %}
+            {% if messages %}
+            <ul class="messages">
+              {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="input-style-1">
+              {{ user_form.as_p }}
+            </div>
+            <button type="submit" class="main-btn primary-btn btn-hover" name="user_form">Update username</button>
+          </form>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div class=" col-lg-6 d-flex justify-content-center ">
+    <div class="card-style settings-card-1 mb-30">
+      <div class="
+    title
+    mb-30
+    d-flex
+    justify-content-between
+    align-items-center
+  ">
+        <h6>Change Password</h6>
+      </div>
+      <!-- Password field -->
+
+      <form method="post">
+        <div class="profile-info">
+          <div class="input-style-1">
+            {% csrf_token %}
+            {{ password_form.as_p }}
+          </div>
+        </div>
+        <p class=""><a class="hover-underline" href="{%url 'reset_password' %}">Forgot Password?</a></p>
+        <button type="submit" class="main-btn primary-btn btn-hover" name="password_form">Update password</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+<script>
+  function previewImage(event) {
+    const input = event.target;
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const img = document.createElement('img');
+      img.src = reader.result;
+      const preview = document.querySelector('.profile-image');
+      preview.innerHTML = '';
+      preview.appendChild(img);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+
+</script>
+{% endblock %}

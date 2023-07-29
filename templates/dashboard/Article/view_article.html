@@ -1,0 +1,160 @@
+{% extends 'Magazine/base.html'%}
+
+
+{% block Article %}
+
+<!-- content
+    ================================================== -->
+<section class="s-content">
+
+    <div class="row">
+        <div class="column large-12">
+
+            <article class="s-content__entry format-standard">
+
+               
+
+                <div class="s-content__entry-header" >
+                    <h1 class="s-content__title s-content__title--post">{{article.title}}</h1>
+                </div> <!-- end s-content__entry-header -->
+                
+                <div class="s-content__media">
+                    <div class="s-content__post-thumb">
+                        <img src="{{ article.image.url }}" sizes="(max-width: 2100px) 100vw, 2100px"
+                            alt="{{ article.title }}">
+                    </div>
+                </div> <!-- end s-content__media -->
+                <div class="s-content__primary">
+
+                    <div class="s-content__entry-content">
+
+                        <p>
+                            <img src="images/sample-1050.jpg" srcset="images/sample-2100.jpg 2100w, 
+                                                images/sample-1050.jpg 1050w, 
+                                                images/sample-525.jpg 525w" sizes="(max-width: 2100px) 100vw, 2100px"
+                                alt="">
+                        </p>
+
+                        <p>
+                            {{article.content|safe}}
+                        </p>
+
+                    </div> <!-- end s-entry__entry-content -->
+
+                    <div class="s-content__entry-meta">
+
+                        <div class="entry-author meta-blk">
+                            <div class="author-avatar">
+                                <img src="{{ article.author.profile.picture.url }}" alt="{{ article.author.username }}">
+                            </div>
+                            <div class="byline">
+                                <span class="bytext">Posted By</span>
+                                <a href="#0">{{article.author}}</a>
+                            </div>
+                        </div>
+
+                        <div class="meta-bottom">
+
+                            <div class="entry-cat-links meta-blk">
+                                <div class="cat-links">
+                                    <span>In</span> {{ article.series }}
+
+                                </div>
+
+                                <span>On</span>
+                                {{ article.modified|date:"j M Y" }}
+
+                            </div>
+
+
+                        </div>
+
+                    </div> <!-- s-content__entry-meta -->
+
+                   <!-- <div class="s-content__pagenav">
+                        <div class="prev-nav">
+                            <a href="#" rel="prev">
+                                <span>Previous</span>
+                                Tips on Minimalist Design
+                            </a>
+                        </div>
+                        <div class="next-nav">
+                            <a href="#" rel="next">
+                                <span>Next</span>
+                                A Practical Guide to a Minimalist Lifestyle.
+                            </a>
+                        </div>-->
+                    </div> <!-- end s-content__pagenav -->
+
+                </div> <!-- end s-content__primary -->
+            </article> <!-- end entry -->
+
+        </div> <!-- end column -->
+    </div> <!-- end row -->
+
+
+    <!-- comments
+        ================================================== -->
+    <div class="comments-wrap">
+
+        <div id="comments" class="row">
+            <div class="column large-12">
+
+
+
+                <!-- START commentlist -->
+                <ol class="commentlist">
+                    {% for comment in article.comment_set.all %}
+                    <li class="depth-1 comment">
+
+                        <div class="comment__avatar">
+                            <img class="avatar" src="{{ comment.author.profile.picture.url }}"
+                                alt="{{ comment.author.username }}" width="50" height="50">
+                        </div>
+
+                        <div class="comment__content">
+
+                            <div class="comment__info">
+                                <div class="comment__author">{{comment.author.username}}</div>
+
+                                <div class="comment__meta">
+                                    <div class="comment__time">{{ comment.timestamp }}</div>
+
+                                </div>
+                            </div>
+
+                            <div class="comment__text">
+                                <p>{{ comment.content }}</p>
+                            </div>
+
+                        </div>
+
+                    </li> <!-- end comment level 1 -->
+                    {% endfor %}
+
+            </div> <!-- end col-full -->
+        </div> <!-- end comments -->
+        <div class="row comment-respond">
+
+            <!-- START respond -->
+            <div id="respond" class="column">
+
+                <h3>
+                    Add Comment
+                    <span>Your Comment will be published.</span>
+                </h3>
+                <form name="contactForm" id="contactForm" method="post" action="" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="message form-field">
+                        {{ form.as_p }}
+                    </div>
+                    <br>
+                    <input name="submit" id="submit" class="btn btn--primary btn-wide btn--large h-full-width"
+                        value="Add Comment" type="submit">
+                </form>
+            </div>
+        </div>
+
+
+</section> <!-- end s-content -->
+{% endblock Article %}

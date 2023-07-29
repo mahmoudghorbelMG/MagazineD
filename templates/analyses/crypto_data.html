@@ -1,0 +1,182 @@
+{% extends 'analyses/base.html' %}
+{% block content %}
+    <script>
+        // Variables globales
+        var currentPage = 1;
+        var rowsPerPage = 20;
+        var totalPages;
+            // Fonction pour afficher les lignes en fonction de la page actuelle
+    function showPage(pageNumber) {
+        var rows = document.getElementsByClassName("data-row");
+        var startIndex = (pageNumber - 1) * rowsPerPage;
+        var endIndex = startIndex + rowsPerPage;
+
+        for (var i = 0; i < rows.length; i++) {
+            if (i >= startIndex && i < endIndex) {
+                rows[i].style.display = "table-row";
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+
+    // Fonction pour changer de page
+    function changePage(pageNumber) {
+        // Mettre à jour le numéro de page affiché
+        currentPage = pageNumber;
+        document.getElementById("current-page").textContent = currentPage;
+
+        // Afficher les lignes correspondantes à la page actuelle
+        showPage(currentPage);
+
+        // Mettre à jour les boutons de pagination
+        updatePaginationButtons();
+    }
+
+    // Fonction pour aller à la page suivante
+    function nextPage() {
+        if (currentPage < totalPages) {
+            changePage(currentPage + 1);
+        }
+    }
+
+    // Fonction pour aller à la page précédente
+    function previousPage() {
+        if (currentPage > 1) {
+            changePage(currentPage - 1);
+        }
+    }
+
+    // Fonction pour mettre à jour l'état des boutons de pagination
+    function updatePaginationButtons() {
+        var prevButton = document.getElementById("prev-button");
+        var nextButton = document.getElementById("next-button");
+
+        if (currentPage === 1) {
+            prevButton.classList.add("disabled");
+        } else {
+            prevButton.classList.remove("disabled");
+        }
+
+        if (currentPage === totalPages) {
+            nextButton.classList.add("disabled");
+        } else {
+            nextButton.classList.remove("disabled");
+        }
+    }
+
+    // Au chargement de la page
+    window.onload = function () {
+        var rows = document.getElementsByClassName("data-row");
+        totalPages = Math.ceil(rows.length / rowsPerPage);
+
+        // Cacher toutes les lignes au chargement initial
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].style.display = "none";
+        }
+
+        // Afficher la première page
+        changePage(1);
+
+        // Mettre à jour les boutons de pagination
+        updatePaginationButtons();
+        document.getElementById("Prediction").style.display = "none";
+    };
+</script>
+<script>
+    // JavaScript code omitted for brevity
+
+    // Function to toggle between tables
+    function toggleTable(tableId) {
+        var allTable = document.getElementById("all");
+        var predictionTable = document.getElementById("Prediction");
+        var allButton = document.getElementById("all-button");
+        var predictionButton = document.getElementById("prediction-button");
+
+        if (tableId === "all") {
+            allTable.style.display = "table";
+            predictionTable.style.display = "none";
+            allButton.classList.add("active");
+            predictionButton.classList.remove("active");
+        } else if (tableId === "Prediction") {
+            allTable.style.display = "none";
+            predictionTable.style.display = "table";
+            allButton.classList.remove("active");
+            predictionButton.classList.add("active");
+        }
+    }
+</script>
+
+</head>
+<body>
+    <section class="s-content">
+        <div class="s-pageheader">
+          <div class="row">
+            <div class="column large-12">
+              <h1 class="page-title">
+                Currencies exchange
+              </h1>
+            </div>
+          </div>
+        </div>
+        <h1 class="text-2xl font-bold mb-4">Crypto Data</h1>
+        <div class="button-container">
+            <button id="all-button" onclick="toggleTable('all')" class="active bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">All</button>
+            <button id="prediction-button" onclick="toggleTable('Prediction')" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Estimation</button>
+        </div>
+        
+        <table id="all" class="w-full mb-4">
+            <thead>
+                <tr>
+                    {% for header in headers %}
+                        <th class="bg-gray-200 text-gray-700 text-left py-2 px-4">{{ header }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                    <tr class="data-row">
+                        {% for value in row %}
+                            <td class="border px-4 py-2">{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <table id="Prediction" class="hidden w-full mb-4">
+            <thead>
+                <tr>
+                    <th class="bg-gray-200 text-gray-700 text-left py-2 px-4">Coin</th>
+                    <th class="bg-gray-200 text-gray-700 text-left py-2 px-4">next_24_hours_volume</th>
+                    <th class="bg-gray-200 text-gray-700 text-left py-2 px-4">next_24_hours_opening</th>
+                    <th class="bg-gray-200 text-gray-700 text-left py-2 px-4">next_24_hours_closing</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    <tr>
+                        <td class="border px-4 py-2">{{ result.coin  }}</td>
+                        <td class="border px-4 py-2">{{ result.volume_prediction  }}</td>
+                        <td class="border px-4 py-2 ">
+                            {{ result.opening_prediction }}
+                        </td>
+                        <td class="border px-4 py-2 ">
+                            {{ result.closing_prediction }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="pagination">
+            <button id="prev-button" onclick="previousPage()" {% if currentPage == 1 %}disabled{% endif %} class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-l">
+                Prev
+            </button>
+            Page <span id="current-page">{{ currentPage }}</span> of {{ totalPages }}
+            <button id="next-button" onclick="nextPage()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-r">
+                Next
+            </button>
+        </div>        
+</section>
+{% endblock content %}

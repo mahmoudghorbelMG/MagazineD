@@ -1,0 +1,101 @@
+{% extends 'market/base.html' %}
+{% block market %}
+{% load static %}
+
+
+<!-- Hero Section Begin -->
+<section class="hero">
+    <div class="hero__slider owl-carousel">
+        <div class="hero__items set-bg" data-setbg="{%static 'images/market/Best-Mid-Range-Laptops-1.png'%}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-7 col-md-8">
+                        <div class="hero__text">
+                            <h6>Gaming laptop-workstations</h6>
+                            <h2>Latest High Performce Tech</h2>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore minus inventore
+                                molestias aut, eum atque et sed. Omnis, quisquam? Nesciunt ullam, id mollitia fuga autem
+                                nisi facilis iusto pariatur. Eius.</p>
+                            <a href="{% url 'shop'%}" class="primary-btn">Shop now </a>
+                            <div class="hero__social">
+                                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hero__items set-bg" data-setbg="{%static 'images/market/hero-1.jpg'%}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-7 col-md-8">
+                        <div class="hero__text">
+                            <h6>Fashion-Accesories</h6>
+                            <h2>Best shose and clothes</h2>
+                            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Illum amet laudantium nostrum
+                                sint molestiae, vel odio, quasi doloremque eveniet nobis reprehenderit! Assumenda,
+                                voluptas nihil accusamus quod ut fuga modi vero.</p>
+                            <a href="{% url 'shop'%}" class="primary-btn">Shop now </a>
+                            <div class="hero__social">
+                                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="filter__controls">
+                    <li class="active" data-filter=".{{series.0.title}}">{{series.0.title}}</li>
+                    {% for serie in series%}
+                    {%if serie != series.0 %}
+                    <li data-filter=".{{serie.title}}">{{serie.title}}</li>
+                    {%endif%}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="row product__filter">
+            {%for product in products %}
+            <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix {{product.series}}">
+              
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="{{ product.image.url }}">
+                        <ul class="product__hover">
+                            <li><a href="{% url 'details'  product.id %}"><img src="{% static 'images/view.png'%}" alt="" style="width: 40px; "></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6>{{product.Product_name }}</h6>
+                        {% if product.is_in_stock %}
+                        <p style="color:green;">In Stock</p>
+                     {% else %}
+                        <p style="color:red;">Out of Stock</p>
+                     {% endif %} </h6>
+                        <a href="{% url 'add_to_cart' product.id %}" class="add-cart">+ Add To Cart</a>
+                        <h5>{{product.price}} {{product.currency }}</h5>
+
+                    </div>
+                </div>
+                
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
+{% endblock market %}
