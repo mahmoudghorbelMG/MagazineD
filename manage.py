@@ -2,7 +2,7 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-from .Athena import settings
+from Athena import settings
 
 def main():
     """Run administrative tasks."""
