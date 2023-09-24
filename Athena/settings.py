@@ -98,7 +98,7 @@ WSGI_APPLICATION = 'Athena.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'storage/db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -146,7 +146,7 @@ LOGIN_REDIRECT_URL = '/'
 
 # MEDIA
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/storage/media/'
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
