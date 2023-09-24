@@ -2,7 +2,7 @@ FROM python:3.11.2
 RUN mkdir /app
 WORKDIR /app
 
-RUN git clone https://github.com/mahmoudghorbelMG/MagazineD.git
+RUN git clone --branch update https://github.com/mahmoudghorbelMG/MagazineD.git
 
 RUN apt-get update
 RUN apt-get install -y vim
